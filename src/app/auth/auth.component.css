@@ -1,0 +1,54 @@
+.divider:after,
+.divider:before {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: rgb(150, 114, 114);
+}
+
+.invalid-detail {
+  margin-top: 5px;
+  color: red !important;
+}
+
+.invalid-control {
+  border-color: red;
+}
+
+mat-icon {
+  position: absolute;
+  top: 26%;
+  right: 4%;
+  z-index: 2;
+  cursor: pointer;
+}
+
+.toolbar {
+  position: relative;
+}
+
+.brand {
+  text-align: center;
+  margin-bottom: 5px;
+  letter-spacing: 0.7px;
+  font-weight: 500;
+}
+
+.brand-divider {
+  margin-top: 0 !important;
+}
+
+.u-brand {
+  color: #2f7fe9;
+}
+
+.otp-down {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}

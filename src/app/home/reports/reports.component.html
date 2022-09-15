@@ -1,0 +1,102 @@
+<app-home-header [title] = "'Reports'"></app-home-header>
+<div class="container-fluid">
+  <mat-card class="reports-wrapper">
+    <div class="row">
+      <div class="col-lg-4 ">
+        <mat-card class="info-card alert alert-success">
+          <div class="row upper">
+            <p class="stats-para">
+
+              {{totalCustomers}}
+            </p>
+          </div>
+          <div class="row lower">
+            No. Of Customers
+          </div>
+        </mat-card>
+      </div>
+      <div class="col-lg-4">
+        <mat-card class="info-card alert alert-warning">
+          <div class="row upper">
+            <p class="stats-para">
+
+              {{totalTransactions}}
+            </p>
+          </div>
+          <div class="row lower">
+            No. Of Transactions
+          </div>
+        </mat-card>
+      </div>
+      <div class="col-lg-4">
+        <mat-card class="info-card alert alert-info">
+          <div class="row upper">
+            <p class="stats-para">
+
+              ₹{{totalProfit}}
+            </p>
+          </div>
+          <div class="row lower">
+            Total Profit
+          </div>
+        </mat-card>
+      </div>
+    </div>
+    <div class="row bar-chart-row">
+      <mat-card class="bar-chart-wrapper">
+        <div class="row bar-chart-action">
+          <div class="col-lg-6 bar-chart-heading">
+            {{ filter }} Per Month ({{year}})
+          </div>
+          <div class="col-lg-6 bar-chart-fields">
+            <div class="row">
+              <div class="col-lg-4">
+                <mat-form-field appearance="fill" class="bar-form-field">
+                  <mat-label> <fa-icon [icon] = "faChartLine"></fa-icon> Chart Type</mat-label>
+                  <mat-select (selectionChange) = "changeChart($event)" >
+                    <mat-option *ngFor = "let chart of chartTypeArray" value = "{{ chart }}">
+                      {{ chart | titlecase }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="col-lg-4">
+                <mat-form-field appearance="fill" class="bar-form-field">
+                  <mat-label> <fa-icon [icon]="faFilter"></fa-icon> Filter</mat-label>
+                  <mat-select  (selectionChange) = "changeFilter($event)">
+                    <mat-option *ngFor = "let filter of filterArray" value = "{{ filter }}">
+                      {{ filter }} Per Month
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="col-lg-4">
+                <mat-form-field
+                [formGroup]="yearForm"
+                class="example-full-width bar-form-field"
+                appearance="fill">
+                  <mat-label><fa-icon [icon] = "faCalendar"></fa-icon> Year</mat-label>
+                  <input #input1 formControlName="cYear" matInput placeholder="{{'Ex. ' + year}}">
+                  <mat-error *ngIf="yearForm.controls.cYear.invalid"></mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <p class="no-data" *ngIf="!stats.length">No Data Found!</p>
+
+        <div class="bar-chart">
+          <canvas baseChart
+            [datasets]="barChartData"
+            [labels]="barChartLabels"
+            [options]="barChartOptions"
+            [plugins]="barChartPlugins"
+            [legend]="barChartLegend"
+            [chartType]="barChartType">
+          </canvas>
+        </div>
+      </mat-card>
+    </div>
+  </mat-card>
+</div>

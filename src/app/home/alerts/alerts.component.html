@@ -1,0 +1,47 @@
+<app-home-header [title] = "'Alerts'"></app-home-header>
+<div class="container-fluid">
+  <mat-card class="alerts-wrapper">
+    <div>
+      <mat-form-field appearance="fill" class="bar-form-field fiter-bar">
+        <mat-label> <fa-icon [icon]="faFilter"></fa-icon> Filter</mat-label>
+        <mat-select (valueChange)="onFilter($event)">
+          <mat-option *ngFor = "let filter of filterArray" value = "{{ filter.value }}">
+            {{ filter.name | titlecase }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <app-empty-state
+        *ngIf = "!items.length"
+        [actionBtn] = "false"
+        [title] = "'No Data Found!'"
+        [notFoundImg] = "true"
+        [subtitle1]="'Looks like you do not have any alerts.'"
+        [subtitle2] = "''"
+      ></app-empty-state>
+      <div class="col-lg-4 item-card-col" *ngFor = "let item of items" >
+      <mat-card [ngClass]="{ 'alert alert-danger' : item?.quantity === 0, 'alert alert-warning' : item?.quantity !== 0 }" class="item-card-main" >
+        <div class="item-card">
+          <div class="upper">
+            <div class="itemName">
+              {{ item?.name | titlecase }}
+            </div>
+            <div class="alert-message">
+              {{ item?.quantity === 0 ? 'Out Of Stock' : 'Low In Stock' }}
+            </div>
+          </div>
+          <div class="lower">
+            <div class="item-qty">
+              Stock Quantity: {{item?.quantity}}
+            </div>
+            <div class="btn">
+              <button (click)="openUpdateItemDialog(item)" class="btn btn-primary">Edit</button>
+            </div>
+          </div>
+        </div>
+      </mat-card>
+      </div>
+    </div>
+  </mat-card>
+</div>

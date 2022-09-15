@@ -1,0 +1,68 @@
+<app-home-header [title] = "'Settings'"></app-home-header>
+<section [formGroup]="updateForm">
+<div class="row">
+  <div class="col-7">
+    <h2 class="heading">Store Name</h2>
+    <div class="row" *ngIf = "!showStoreNameChange">
+    <div class="content">
+      <div class = "input-width">
+        <h3>{{ store?.name | titlecase }}</h3>
+      </div>
+      <div>
+        <button class="btn btn-secondary" (click) = "toggleShowStoreNameChange()">Edit</button>
+      </div>
+    </div>
+    </div>
+    <div class="row" *ngIf = "showStoreNameChange">
+      <div class="content">
+      <div class = "input-width">
+        <input [ngModel]="storeName" [ngClass]="{'input-red': updateControls.name.invalid && updateControls.name.touched, 'border-red': updateControls.name.invalid && updateControls.name.touched}" formControlName="name" type="text" class="input" value="Guru Kirpa Stores">
+      </div>
+      <div>
+        <button class="btn btn-secondary cancel-btn" (click) = "toggleShowStoreNameChange()">Cancel</button>
+        <button class="btn btn-primary button" (click)="onNameChange()">Save</button>
+      </div>
+    </div>
+
+    <div class="input-red" *ngIf="updateControls.name.invalid && updateControls.name.touched">
+      Enter a valid name.
+    </div>
+  </div>
+    <mat-divider class="divider"></mat-divider>
+  </div>
+
+</div>
+
+<div class="row">
+  <div class="col-7">
+    <h2 class="heading">Store Contact Number</h2>
+    <div class="row" *ngIf = "!showStoreContactChange">
+    <div class="content">
+      <div class = "input-width">
+        <h3>{{store?.storeContactNumber}}</h3>
+      </div>
+      <div>
+        <button class="btn btn-secondary" (click) = "toggleShowStoreContactChange()">Edit</button>
+      </div>
+    </div>
+    </div>
+    <div class="row" *ngIf = "showStoreContactChange">
+      <div class="content">
+      <div class = "input-width">
+        <input [ngModel]="storeContact" [ngClass]="{'input-red': updateControls.mobileNumber.invalid && updateControls.mobileNumber.touched, 'border-red': updateControls.mobileNumber.invalid && updateControls.mobileNumber.touched}" formControlName="mobileNumber" type="text" class="input" value="Guru Kirpa Stores">
+      </div>
+      <div>
+        <button class="btn btn-secondary cancel-btn" (click) = "toggleShowStoreContactChange()">Cancel</button>
+        <button class="btn btn-primary" (click)="onNumberChange()">Save</button>
+      </div>
+    </div>
+    <div class="input-red" *ngIf="updateControls.mobileNumber.invalid && updateControls.mobileNumber.touched">
+      Enter a valid mobile number.
+    </div>
+
+    </div>
+    <mat-divider class="divider"></mat-divider>
+  </div>
+
+</div>
+</section>

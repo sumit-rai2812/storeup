@@ -1,0 +1,53 @@
+<mat-nav-list>
+    <div class="company-card">
+        <img
+        (click)="openAddItemCategoryDialog()"
+        src="./assets/images/store.png" alt="store_png">
+      <h2 class="company-name">{{storeName | titlecase}}</h2>
+
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <a mat-list-item routerLinkActive="list-item-active" [routerLink]="['dashboard']" routerLinkActive="active">
+        <mat-icon>dashboard</mat-icon>
+        Dashboard
+    </a>
+
+    <a
+    mat-list-item
+    (click)="openCreateInvoiceDialog()">
+      <mat-icon>receipt</mat-icon>
+      Create Invoice
+    </a>
+
+    <a mat-list-item routerLinkActive="list-item-active" [routerLink]="['customers']" routerLinkActive="active">
+        <mat-icon>people</mat-icon>
+        Customers
+    </a>
+
+    <a mat-list-item routerLinkActive="list-item-active" [routerLink]="['transactions']" routerLinkActive="active">
+      <mat-icon>receipt_long</mat-icon>
+      Transactions
+    </a>
+
+    <a mat-list-item routerLinkActive="list-item-active" [routerLink]="['credits']" routerLinkActive="active">
+      <mat-icon>credit_card</mat-icon>
+      Credits
+    </a>
+
+    <a mat-list-item routerLinkActive="list-item-active" [routerLink]="['reports']" routerLinkActive="active">
+      <mat-icon>summarize</mat-icon>
+      Reports
+    </a>
+
+    <a mat-list-item routerLinkActive="list-item-active" [routerLink]="['inventory']" routerLinkActive="active">
+      <mat-icon>inventory_2</mat-icon>
+      Inventory
+    </a>
+
+    <a mat-list-item routerLinkActive="list-item-active" [routerLink]="['alerts']" routerLinkActive="active">
+      <mat-icon>notifications</mat-icon>
+      Alerts
+    </a>
+</mat-nav-list>

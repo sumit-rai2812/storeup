@@ -1,0 +1,149 @@
+<app-home-header [title] = "'Inventory'"></app-home-header>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-3 sidebar">
+      <mat-card class="sidebar-container">
+        <div class="sidebar-top-btn-wrapper" *ngIf = "!showSearchInput">
+        <button
+        (click) = "onClickSearchBtn()"
+        class="search-btn"
+        mat-mini-fab
+        aria-label="Example icon button with a home icon">
+          <mat-icon style="color: black;">search</mat-icon>
+        </button>
+        <button (click)="openAddItemDialog()" class="btn btn-warning">
+          <fa-icon [icon] = "faPlus" class="icon-mr" ></fa-icon>
+          Add Item
+        </button>
+        </div>
+        <div class="input-group mb-3" [ngClass]="{'display-none': !showSearchInput}">
+          <span class="input-group-text">
+            <mat-icon>search</mat-icon>
+          </span>
+          <input #input1 (change) = "searchInput($event)" type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
+          <span class="input-group-text close-search-input-btn">
+            <mat-icon  (click) = "closeSearchInput()">close</mat-icon>
+          </span>
+        </div>
+        <div class="mt-3 mb-5">
+          <mat-divider></mat-divider>
+        </div>
+
+        <div>
+          <app-empty-state
+              *ngIf = "!itemsBySearch.length"
+              [actionBtn] = "false"
+              [title] = "'No Data Found!'"
+              [notFoundImg] = "true"
+              [subtitle1]="''"
+              [subtitle2] = "''"
+            ></app-empty-state>
+          <mat-card *ngFor="let item of itemsBySearch" (click)="onSelect(item)" class="mb-2 alert alert-info customer-selector">
+            <div class="customer-selector-inside">
+              <span>{{ item?.name | titlecase }}</span>
+              <mat-icon>chevron_right</mat-icon>
+            </div>
+          </mat-card>
+        </div>
+
+      </mat-card>
+    </div>
+    <div class="col-lg-9">
+      <div class="row">
+        <div class="col-lg-12 content-wrapper">
+          <mat-card class="content-container">
+
+            <div class="container-fluid">
+              <div class="content-header">
+                <span class="customer-name">{{ item?.name | titlecase  }}</span>
+                <div>
+                  <button class="btn btn-danger content-btn mr-10px" (click)="openDeleteItemDialog()"> <fa-icon [icon]="faTrashAlt" class="icon-mr"></fa-icon>Delete</button>
+                  <button class="btn btn-primary content-btn mr-10px" (click)="openUpdateItemDialog()"><fa-icon [icon]="faEdit" class="icon-mr"></fa-icon>Edit</button>
+                  <!-- <button class="btn btn-info content-btn"><fa-icon [icon]="faInfo" class="icon-mr"></fa-icon>View</button> -->
+                </div>
+              </div>
+              <div class="content-body">
+                <div>
+                  <p class="mb-1 mt-2">Size: {{ item?.size  || '-' }}</p>
+                  <p class="mb-1">Rate: <fa-icon [icon]="faRupeeSign" ></fa-icon> {{ item?.rate  || '-' }}</p>
+                  <p class="mb-1">Mrp: <fa-icon [icon]="faRupeeSign" ></fa-icon> {{ item?.mrp  || '-' }}</p>
+                  <p class="mb-1">Profit: <fa-icon [icon]="faRupeeSign" ></fa-icon> {{ item?.profit  || '-' }}</p>
+                  <p >Purchase Price: <fa-icon [icon]="faRupeeSign" ></fa-icon> {{ item?.purchasePrice  || '-' }}</p>
+                </div>
+                <div>
+                  <p class="mb-1 mt-2" [ngClass]="{'color-succcess': item?.quantity > 9, 'color-red': item?.quantity <= 9 }">Stock Quantity: {{ item?.quantity || '-' }}</p>
+                  <p class="mb-1">Stock Value: <fa-icon [icon]="faRupeeSign" ></fa-icon> {{ item?.rate * item?.quantity || '-' }}</p>
+                  <p class="mb-1">Brand: {{ item?.brand | titlecase }}</p>
+                  <p class="mb-1">Category: {{ item?.category | titlecase }}</p>
+                  <p *ngIf="item?.createdAt ">Created At: {{ item?.createdAt | date: 'shortDate' || '-' }}</p>
+                </div>
+              </div>
+            </div>
+          </mat-card>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12 list-wrapper">
+          <mat-card class="list-container items-card-table">
+            <h2>Items: </h2>
+            <app-empty-state
+              *ngIf = "!items.length"
+              [actionBtn] = "false"
+              [title] = "'No Data Found!'"
+              [notFoundImg] = "true"
+              [subtitle1]="'Looks like you do not have any items.'"
+              [subtitle2] = "''"
+            ></app-empty-state>
+            <div *ngIf="items.length">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col"></th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Mrp</th>
+                    <th scope="col">Rate</th>
+                    <th scope="col">S.Quantity</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Created At</th>
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of items">
+                    <th scope="row"><fa-icon [icon] = "faDotCircle" class="text-info"></fa-icon></th>
+                    <td>{{ item?.name | titlecase }}</td>
+                    <td><fa-icon [icon] = "faRupeeSign"></fa-icon> {{ item?.mrp }}</td>
+                    <td><fa-icon [icon] = "faRupeeSign"></fa-icon> {{ item?.rate }}</td>
+                    <td>{{ item?.quantity }}</td>
+                    <td>{{ item?.category }}</td>
+                    <td>{{ item?.createdAt | date: 'short' }}</td>
+                    <td>
+                      <button class="trans-more-detail-btn" mat-button [matMenuTriggerFor]="transaction">
+                        <fa-icon [icon] = "faEllipsisV"></fa-icon>
+                      </button>
+                      <mat-menu #transaction="matMenu">
+                        <button (click)="onSelect(item)" mat-menu-item>
+                            <!-- <mat-icon>View</mat-icon> -->
+                            Select
+                        </button>
+                      </mat-menu>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <footer *ngIf="items.length">
+              <mat-paginator [length]="paginationLength"
+              [pageSize]="2"
+              (page)="pageEvent = onPaginate($event)"
+              [pageSizeOptions]="[2, 4, 8]"
+              aria-label="Select page">
+              </mat-paginator>
+            </footer>
+          </mat-card>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
